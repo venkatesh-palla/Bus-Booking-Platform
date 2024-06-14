@@ -12,11 +12,15 @@ import java.util.List;
 
 
 @Repository
-public interface BookingsRepository extends JpaRepository<Bookings,String> {
+public interface BookingsRepository extends JpaRepository<Bookings, String> {
 
-    @Query(value = "SELECT * FROM bus WHERE bus_name = :busName",nativeQuery = true)
+    /**
+     * Fetches a list of buses by their name.
+     *
+     * @param busName the name of the bus.
+     * @return a list of buses with the specified name.
+     */
+    @Query(value = "SELECT * FROM bus WHERE bus_name = :busName", nativeQuery = true)
     List<Bus> getBusByName(@Param("busName") String busName);
-
-
 
 }

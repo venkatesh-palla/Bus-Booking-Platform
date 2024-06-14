@@ -16,24 +16,37 @@ public class BookingsController {
     @Autowired
     BookingsService bookingsService;
 
+
+    /**
+     * Endpoint to handle creating a new booking.
+     *
+     * @param bookingsRequest The request body containing booking details.
+     */
     @PostMapping("/createBooking")
     public void createBooking(@RequestBody BookingsRequest bookingsRequest) {
         bookingsService.createBooking(bookingsRequest);
     }
 
 
+    /**
+     * Endpoint to retrieve booking details by booking ID.
+     *
+     * @param bookingId The ID of the booking to retrieve.
+     * @return BookingsResponse containing booking details.
+     */
     @GetMapping("/{bookingId}")
     public BookingsResponse getDataByBookingId(@PathVariable String bookingId) {
-           return bookingsService.getDataByBookingId(bookingId);
+        return bookingsService.getDataByBookingId(bookingId);
     }
 
 
-
+    /**
+     * Endpoint to retrieve all bookings.
+     *
+     * @return List of BookingsResponse containing details of all bookings.
+     */
     @GetMapping("/allBookings")
     public List<BookingsResponse> getAllBookings() {
         return bookingsService.getAllBookings();
     }
-
-
-
 }

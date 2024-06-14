@@ -15,18 +15,23 @@ import java.util.Optional;
 
 
 @Service
-public class BookingsServiceImpl implements BookingsService{
+public class BookingsServiceImpl implements BookingsService {
 
     @Autowired
     BookingsRepository bookingsRepository;
 
 
+    /**
+     * Retrieves booking data for a specific booking ID.
+     *
+     * @param bookingId the ID of the booking to retrieve.
+     * @return the booking data wrapped in a BookingsResponse object.
+     */
     @Override
     public BookingsResponse getDataByBookingId(String bookingId) {
-        
 
         BookingsResponse bookingsResponse = new BookingsResponse();
-        Bookings object =  bookingsRepository.findById(bookingId).get();
+        Bookings object = bookingsRepository.findById(bookingId).get();
         Bus bus = new Bus();
         Payment payment = new Payment();
 
@@ -51,12 +56,18 @@ public class BookingsServiceImpl implements BookingsService{
 
         bookingsResponse.setStatus(payment.getStatus());
         bookingsResponse.setAmount(payment.getAmount());
+
         return bookingsResponse;
     }
 
+    /**
+     * Creates a new booking based on the provided booking request.
+     *
+     * @param bookingsRequest the request containing booking details.
+     * @return the created booking data wrapped in a BookingsResponse object.
+     */
     public BookingsResponse createBooking(BookingsRequest bookingsRequest) {
         Bookings bookings = new Bookings();
-
 
         bookings.setBookingId(bookingsRequest.getBookingId());
         bookings.setAge(bookingsRequest.getAge());
@@ -69,8 +80,6 @@ public class BookingsServiceImpl implements BookingsService{
         bookings.setSeatType(bookingsRequest.getSeatType());
         bookings.setPhoneNumber(bookingsRequest.getPhoneNumber());
         bookings.setSeatNumber(bookingsRequest.getSeatNumber());
-
-
 
         bookingsRepository.save(bookings);
 
@@ -88,19 +97,22 @@ public class BookingsServiceImpl implements BookingsService{
         bookingsResponse.setPhoneNumber(bookings.getPhoneNumber());
         bookingsResponse.setSeatNumber(bookings.getSeatNumber());
 
-
         return bookingsResponse;
     }
 
+    /**
+     * Retrieves all bookings.
+     *
+     * @return a list of all bookings wrapped in BookingsResponse objects.
+     */
     @Override
     public List<BookingsResponse> getAllBookings() {
-        
+
         List<Bookings> bookings = bookingsRepository.findAll();
-        
+
         List<BookingsResponse> bookingsResponses = new ArrayList<>();
-        
-        for(Bookings i:bookings)
-        {
+
+        for (Bookings i : bookings) {
             BookingsResponse bookingsResponse = new BookingsResponse();
             bookingsResponse.setBookingId(i.getBookingId());
             bookingsResponse.setAge(i.getAge());
@@ -117,9 +129,7 @@ public class BookingsServiceImpl implements BookingsService{
             bookingsResponses.add(bookingsResponse);
         }
         return bookingsResponses;
-        
+
     }
-
-
 
 }

@@ -15,24 +15,39 @@ public class PaymentController {
         @Autowired
         PaymentService paymentService;
 
+
+        /**
+         * Endpoint to retrieve payment details by payment ID.
+         *
+         * @param paymentId The ID of the payment to retrieve.
+         * @return PaymentResponse containing details of the payment.
+         */
         @GetMapping("/{paymentId}")
         public PaymentResponse getPaymentById(@PathVariable String paymentId) {
-            return paymentService.getPaymentById(paymentId);
+                return paymentService.getPaymentById(paymentId);
         }
 
+
+        /**
+         * Endpoint to initiate a payment transaction.
+         *
+         * @param paymentRequest The request body containing payment details.
+         * @throws Exception if payment processing fails.
+         */
         @PostMapping("/doPayment")
-        public void doPayment(@RequestBody PaymentRequest paymentRequest ) throws Exception {
+        public void doPayment(@RequestBody PaymentRequest paymentRequest) throws Exception {
                 paymentService.doPayment(paymentRequest);
         }
 
 
-
-
-        @GetMapping()
+        /**
+         * Endpoint to retrieve details of all payments.
+         *
+         * @return List of PaymentResponse containing details of all payments.
+         */
+        @GetMapping("/allPayments")
         public List<PaymentResponse> getAllPayments() {
                 return paymentService.getAllPayments();
         }
-
-
 
 }

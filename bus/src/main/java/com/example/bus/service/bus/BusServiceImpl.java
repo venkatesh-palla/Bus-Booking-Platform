@@ -10,19 +10,20 @@ import com.example.bus.repository.BusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class BusServiceImpl implements BusService{
+public class BusServiceImpl implements BusService {
+
     @Autowired
     BusRepository busRepository;
 
     @Override
     public BusResponse create(BusRequest busRequest) {
+        // Create a new bus entity based on the request data
         Bus bus = new Bus();
         bus.setBusId(busRequest.getBusId());
         bus.setBusName(busRequest.getBusName());
@@ -35,9 +36,11 @@ public class BusServiceImpl implements BusService{
         bus.setDate(busRequest.getDate());
         bus.setTime(busRequest.getTime());
 
+        // Save the bus entity to the database
         busRepository.save(bus);
 
-        BusResponse  busResponse = new BusResponse();
+        // Prepare and return the response with the saved bus data
+        BusResponse busResponse = new BusResponse();
         busResponse.setBusId(bus.getBusId());
         busResponse.setBusName(bus.getBusName());
         busResponse.setBusType(bus.getBusType());
@@ -49,11 +52,11 @@ public class BusServiceImpl implements BusService{
         busResponse.setDate(bus.getDate());
         busResponse.setTime(bus.getTime());
         return busResponse;
-
     }
 
     @Override
     public BusResponse update(BusRequest busRequest) {
+        // Update an existing bus entity based on the request data
         Bus bus = new Bus();
         bus.setBusId(busRequest.getBusId());
         bus.setBusName(busRequest.getBusName());
@@ -66,9 +69,11 @@ public class BusServiceImpl implements BusService{
         bus.setDate(busRequest.getDate());
         bus.setTime(busRequest.getTime());
 
+        // Save the updated bus entity to the database
         busRepository.save(bus);
 
-        BusResponse  busResponse = new BusResponse();
+        // Prepare and return the response with the updated bus data
+        BusResponse busResponse = new BusResponse();
         busResponse.setBusId(bus.getBusId());
         busResponse.setBusName(bus.getBusName());
         busResponse.setBusType(bus.getBusType());
@@ -84,16 +89,17 @@ public class BusServiceImpl implements BusService{
 
     @Override
     public void delete(String busId) {
+        // Delete a bus entity from the database by its ID
         busRepository.deleteById(busId);
-
     }
 
     @Override
     public List<BusResponse> getBuses() {
+        // Retrieve all buses from the database
         List<Bus> responses = busRepository.findAll();
-        List<BusResponse> response =  new ArrayList<>();
-        for(Bus i:responses)
-        {
+        List<BusResponse> response = new ArrayList<>();
+        // Convert each retrieved bus entity to a response object
+        for (Bus i : responses) {
             BusResponse busResponse = new BusResponse();
             busResponse.setBusId(i.getBusId());
             busResponse.setBusName(i.getBusName());
@@ -112,11 +118,11 @@ public class BusServiceImpl implements BusService{
 
     @Override
     public List<BusResponse> getBusByName(String busName) {
-
-         List<Bus> responses = busRepository.getBusByName(busName);
-        List<BusResponse> response =  new ArrayList<>();
-        for(Bus i:responses)
-        {
+        // Retrieve buses from the database by their name
+        List<Bus> responses = busRepository.getBusByName(busName);
+        List<BusResponse> response = new ArrayList<>();
+        // Convert each retrieved bus entity to a response object
+        for (Bus i : responses) {
             BusResponse busResponse = new BusResponse();
             busResponse.setBusId(i.getBusId());
             busResponse.setBusName(i.getBusName());
@@ -135,10 +141,11 @@ public class BusServiceImpl implements BusService{
 
     @Override
     public List<BusResponse> getBusBySourceAndDestinationByTime(String source, String destination, Date date) {
-        List<Bus> responses = busRepository.getBusBySourceAndDestinationByTime(source,destination,date);
-        List<BusResponse> response =  new ArrayList<>();
-        for(Bus i:responses)
-        {
+        // Retrieve buses from the database by source, destination, and date
+        List<Bus> responses = busRepository.getBusBySourceAndDestinationByTime(source, destination, date);
+        List<BusResponse> response = new ArrayList<>();
+        // Convert each retrieved bus entity to a response object
+        for (Bus i : responses) {
             BusResponse busResponse = new BusResponse();
             busResponse.setBusId(i.getBusId());
             busResponse.setBusName(i.getBusName());
@@ -157,10 +164,11 @@ public class BusServiceImpl implements BusService{
 
     @Override
     public List<BusResponse> getBusByTime(Timestamp time) {
+        // Retrieve buses from the database by departure time
         List<Bus> responses = busRepository.getBusByTime(time);
-        List<BusResponse> response =  new ArrayList<>();
-        for(Bus i:responses)
-        {
+        List<BusResponse> response = new ArrayList<>();
+        // Convert each retrieved bus entity to a response object
+        for (Bus i : responses) {
             BusResponse busResponse = new BusResponse();
             busResponse.setBusId(i.getBusId());
             busResponse.setBusName(i.getBusName());
@@ -179,10 +187,11 @@ public class BusServiceImpl implements BusService{
 
     @Override
     public List<BusResponse> busType(BusType busType) {
+        // Retrieve buses from the database by bus type
         List<Bus> responses = busRepository.busType(busType);
-        List<BusResponse> response =  new ArrayList<>();
-        for(Bus i:responses)
-        {
+        List<BusResponse> response = new ArrayList<>();
+        // Convert each retrieved bus entity to a response object
+        for (Bus i : responses) {
             BusResponse busResponse = new BusResponse();
             busResponse.setBusId(i.getBusId());
             busResponse.setBusName(i.getBusName());
@@ -199,10 +208,13 @@ public class BusServiceImpl implements BusService{
         return response;
     }
 
+    @Override
     public List<ConnectedBusApiResponse> getConnectedBuses(String firstBusSource, String secondBusDestination) {
+        // Retrieve connected buses from the database based on source and destination
         List<Object[]> results = busRepository.findConnectingBuses(firstBusSource, secondBusDestination);
         List<ConnectedBusApiResponse> connectedBusApiResponses = new ArrayList<>();
 
+        // Convert each result to a ConnectedBusApiResponse object
         for (Object[] result : results) {
             ConnectedBusApiResponse response = new ConnectedBusApiResponse();
             response.setFirstBusId((String) result[0]);
@@ -220,7 +232,4 @@ public class BusServiceImpl implements BusService{
 
         return connectedBusApiResponses;
     }
-
-
-
 }

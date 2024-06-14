@@ -36,7 +36,6 @@ public class Bookings {
     @Column(name = "seatType")
     private String seatType;
 
-
     @Column(name = "phoneNumber")
     private String phoneNumber;
 
@@ -47,12 +46,12 @@ public class Bookings {
     @JoinColumn(name = "busId", referencedColumnName = "busId")
     private Bus bus;
 
-     @Column(name = "bookingDate")
-     private LocalDate bookingDate;
+    @Column(name = "bookingDate")
+    private LocalDate bookingDate;
 
-     @Column(name = "departureTime")
-     private LocalTime departureTime;
+    @Column(name = "departureTime")
+    private LocalTime departureTime;
 
-     @Column(name = "bookingStatus")
-     private String bookingStatus;
+    @Column(name = "bookingStatus")
+    private String bookingStatus;
 }
