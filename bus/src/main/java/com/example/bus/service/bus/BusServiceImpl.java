@@ -199,30 +199,28 @@ public class BusServiceImpl implements BusService{
         return response;
     }
 
-    @Override
     public List<ConnectedBusApiResponse> getConnectedBuses(String firstBusSource, String secondBusDestination) {
+        List<Object[]> results = busRepository.findConnectingBuses(firstBusSource, secondBusDestination);
+        List<ConnectedBusApiResponse> connectedBusApiResponses = new ArrayList<>();
 
-      List<Bus>  buses  = busRepository.findConnectingBuses(firstBusSource,secondBusDestination);
+        for (Object[] result : results) {
+            ConnectedBusApiResponse response = new ConnectedBusApiResponse();
+            response.setFirstBusId((String) result[0]);
+            response.setSecondBusId((String) result[5]);
+            response.setFirstBusName((String) result[1]);
+            response.setSecondBusName((String) result[6]);
+            response.setFirstBusSource((String) result[2]);
+            response.setSecondBusSource((String) result[7]);
+            response.setFirstBusDestination((String) result[3]);
+            response.setSecondBusDestination((String) result[8]);
+            response.setFirstBusTime((Timestamp) result[4]);
+            response.setSecondBusTime((Timestamp) result[9]);
+            connectedBusApiResponses.add(response);
+        }
 
-      List<ConnectedBusApiResponse> connectedBusApiResponses = new ArrayList<>();
-
-      for(Bus i:buses)
-      {
-          ConnectedBusApiResponse response = new ConnectedBusApiResponse();
-          response.setFirstBusId(i.getBusId());
-          response.setSecondBusId(i.getBusId());
-          response.setFirstBusName(i.getBusName());
-          response.setSecondBusName(i.getBusName());
-          response.setFirstBusSource(i.getSource());
-          response.setSecondBusSource(i.getSource());
-          response.setFirstBusDestination(i.getDestination());
-          response.setSecondBusDestination(i.getDestination());
-          response.setFirstBusTime(i.getTime());
-          response.setSecondBusTime(i.getTime());
-          connectedBusApiResponses.add(response);
-      }
         return connectedBusApiResponses;
     }
+
 
 
 }

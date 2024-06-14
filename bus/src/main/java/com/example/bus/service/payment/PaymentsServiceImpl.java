@@ -55,23 +55,23 @@ public class PaymentsServiceImpl implements PaymentService {
             payment.setPaymentType(paymentRequest.getPaymentType());
             payment.setStatus(paymentRequest.getStatus());
             payment.setPaymentDate(paymentRequest.getPaymentDate());
+
             boolean isRetry = true;
-            int count = 1;
-            while(isRetry && count <=2)
-            {
+            int attemptCount = 1;
+            while (isRetry && attemptCount <= 2) {
                 try {
                     paymentRepository.save(payment);
-
                     paymentRepository.sucess(bookingId);
-                    break;
-                }catch (Exception e)
-                {
-                    count++;
-                   isRetry = true;
+                    isRetry = false;
+                } catch (Exception e) {
+                    if (attemptCount >= 2) {
+                        throw new Exception("Payment failed after multiple attempts for booking ID: " + bookingId);
+                    }
+                    attemptCount++;
                 }
             }
-
-        } else {
+        }
+        else {
             throw new Exception("Booking not found with id: " + bookingId);
         }
     }

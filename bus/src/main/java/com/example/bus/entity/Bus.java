@@ -19,7 +19,7 @@ public class Bus {
     @Column(name = "busId")
     private String busId;
 
-    @Column(name = "bus_name")
+    @Column(name = "busName")
     private String busName;
 
     @Column(name = "source")
@@ -34,7 +34,7 @@ public class Bus {
     @Column(name = "availableSeats")
     private Long availableSeats;
 
-    @Column(name = "ticket_price")
+    @Column(name = "ticketPrice")
     private Double ticketPrice;
 
     @Enumerated(EnumType.STRING)

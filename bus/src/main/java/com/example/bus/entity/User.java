@@ -16,10 +16,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long userId;
 
-    @Column(name = "first_name")
+    @Column(name = "firstName")
     private String firstName;
 
-    @Column(name = "last_name")
+    @Column(name = "lastName")
     private String lastName;
 
 
@@ -32,7 +32,7 @@ public class User {
     @Column(name = "age")
     private long age;
 
-    @Column(name = "phone_number",length = 10)
+    @Column(name = "phoneNumber",length = 10)
     private String phoneNumber;
 
     @Column(name = "email",unique = true)
