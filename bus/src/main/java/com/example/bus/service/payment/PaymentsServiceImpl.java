@@ -62,6 +62,7 @@ public class PaymentsServiceImpl implements PaymentService {
      */
     public void doPayment(PaymentRequest paymentRequest) throws Exception {
         String bookingId = paymentRequest.getBookingId();
+        Double amount = paymentRequest.getAmount();
 
         // Retrieve booking details from the repository based on bookingId
         Optional<Bookings> bookingOptional = bookingsRepository.findById(bookingId);
@@ -73,37 +74,28 @@ public class PaymentsServiceImpl implements PaymentService {
             // Create a new Payment object and populate it with payment details
             Payment payment = new Payment();
             payment.setBooking(booking);
-            payment.setAmount(paymentRequest.getAmount());
+            payment.setAmount(amount);  // Use amount directly from paymentRequest
             payment.setPaymentType(paymentRequest.getPaymentType());
             payment.setStatus(paymentRequest.getStatus());
             payment.setPaymentDate(paymentRequest.getPaymentDate());
 
-            // Attempt payment up to 2 times in case of failure
-            boolean isRetry = true;
-            int attemptCount = 1;
-            while (isRetry && attemptCount <= 2) {
-                try {
-                    // Save payment details
-                    paymentRepository.save(payment);
+            // Save payment details
+            paymentRepository.save(payment);
 
-                    // Mark booking as successful
-                    paymentRepository.sucess(bookingId);
-
-                    // Payment successful, no need to retry
-                    isRetry = false;
-                } catch (Exception e) {
-                    // Handle payment failure
-                    if (attemptCount >= 2) {
-                        throw new Exception("Payment failed after multiple attempts for booking ID: " + bookingId);
-                    }
-                    attemptCount++;
-                }
+            // Process payment based on amount
+            if (amount == 10000) {
+                // Mark booking as successful
+                paymentRepository.sucess(bookingId);
+            } else {
+                // Mark booking as unsuccessful
+                paymentRepository.unSucess(bookingId);
             }
         } else {
             // Throw exception if booking is not found
             throw new Exception("Booking not found with id: " + bookingId);
         }
     }
+
 
 
     /**

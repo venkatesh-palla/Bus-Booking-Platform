@@ -5,6 +5,7 @@ import com.example.bus.api.request.bookings.BookingsRequest;
 import com.example.bus.api.response.bookings.BookingsResponse;
 import com.example.bus.entity.Bus;
 import com.example.bus.entity.Payment;
+import com.example.bus.exception.ResourceNotFoundException;
 import com.example.bus.repository.BookingsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,59 +14,48 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
 public class BookingsServiceImpl implements BookingsService {
 
     @Autowired
-    BookingsRepository bookingsRepository;
+    private BookingsRepository bookingsRepository;
 
-
-    /**
-     * Retrieves booking data for a specific booking ID.
-     *
-     * @param bookingId the ID of the booking to retrieve.
-     * @return the booking data wrapped in a BookingsResponse object.
-     */
     @Override
     public BookingsResponse getDataByBookingId(String bookingId) {
+        Optional<Bookings> optionalBooking = bookingsRepository.findById(bookingId);
+        if (optionalBooking.isPresent()) {
+            Bookings object = optionalBooking.get();
+            BookingsResponse bookingsResponse = new BookingsResponse();
+            Bus bus = new Bus();
+            Payment payment = new Payment();
 
-        BookingsResponse bookingsResponse = new BookingsResponse();
-        Bookings object = bookingsRepository.findById(bookingId).get();
-        Bus bus = new Bus();
-        Payment payment = new Payment();
+            bookingsResponse.setBookingId(object.getBookingId());
+            bookingsResponse.setAge(object.getAge());
+            bookingsResponse.setBookingDate(object.getBookingDate());
+            bookingsResponse.setBus(object.getBus());
+            bookingsResponse.setGender(object.getGender());
+            bookingsResponse.setPayment(object.getPayment());
+            bookingsResponse.setFullName(object.getFullName());
+            bookingsResponse.setDepartureTime(object.getDepartureTime());
+            bookingsResponse.setSeatType(object.getSeatType());
+            bookingsResponse.setPhoneNumber(object.getPhoneNumber());
+            bookingsResponse.setSeatNumber(object.getSeatNumber());
+            bookingsResponse.setBookingStatus(object.getBookingStatus());
 
-        bookingsResponse.setBookingId(object.getBookingId());
-        bookingsResponse.setAge(object.getAge());
-        bookingsResponse.setBookingDate(object.getBookingDate());
-        bookingsResponse.setBus(object.getBus());
-        bookingsResponse.setGender(object.getGender());
-        bookingsResponse.setPayment(object.getPayment());
-        bookingsResponse.setFullName(object.getFullName());
-        bookingsResponse.setDepartureTime(object.getDepartureTime());
-        bookingsResponse.setSeatType(object.getSeatType());
-        bookingsResponse.setPhoneNumber(object.getPhoneNumber());
-        bookingsResponse.setSeatNumber(object.getSeatNumber());
-        bookingsResponse.setPayment(object.getPayment());
-        bookingsResponse.setBookingStatus(object.getBookingStatus());
+            bookingsResponse.setBusId(bus.getBusId());
+            bookingsResponse.setSource(bus.getSource());
+            bookingsResponse.setDestination(bus.getDestination());
+            bookingsResponse.setBusName(bus.getBusName());
 
-        bookingsResponse.setBusId(bus.getBusId());
-        bookingsResponse.setSource(bus.getSource());
-        bookingsResponse.setDestination(bus.getDestination());
-        bookingsResponse.setBusName(bus.getBusName());
+            bookingsResponse.setStatus(payment.getStatus());
+            bookingsResponse.setAmount(payment.getAmount());
 
-        bookingsResponse.setStatus(payment.getStatus());
-        bookingsResponse.setAmount(payment.getAmount());
-
-        return bookingsResponse;
+            return bookingsResponse;
+        } else {
+            throw new ResourceNotFoundException("Booking not found with ID: " + bookingId);
+        }
     }
 
-    /**
-     * Creates a new booking based on the provided booking request.
-     *
-     * @param bookingsRequest the request containing booking details.
-     * @return the created booking data wrapped in a BookingsResponse object.
-     */
     public BookingsResponse createBooking(BookingsRequest bookingsRequest) {
         Bookings bookings = new Bookings();
 
@@ -100,14 +90,8 @@ public class BookingsServiceImpl implements BookingsService {
         return bookingsResponse;
     }
 
-    /**
-     * Retrieves all bookings.
-     *
-     * @return a list of all bookings wrapped in BookingsResponse objects.
-     */
     @Override
     public List<BookingsResponse> getAllBookings() {
-
         List<Bookings> bookings = bookingsRepository.findAll();
 
         List<BookingsResponse> bookingsResponses = new ArrayList<>();
@@ -129,7 +113,5 @@ public class BookingsServiceImpl implements BookingsService {
             bookingsResponses.add(bookingsResponse);
         }
         return bookingsResponses;
-
     }
-
 }

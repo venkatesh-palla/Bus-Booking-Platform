@@ -95,4 +95,6 @@ public interface BusService {
      */
     public List<ConnectedBusApiResponse> getConnectedBuses(String firstBusSource, String secondBusDestination);
 
+    public  BusResponse getBusByBusId(String busId);
+
 }

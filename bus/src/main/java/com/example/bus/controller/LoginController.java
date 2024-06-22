@@ -26,6 +26,8 @@ public class LoginController {
      * @return String message indicating successful login ("Welcome") or invalid credentials ("Wrong Credentials").
      */
     @PostMapping("/UserLogin")
+ //   @Operation(summary = "User login",
+//            description = "Authenticates user login credentials and returns a welcome message upon successful login or an error message for invalid credentials.")
     public String loginDetail(@RequestBody LoginRequest loginRequest) {
         // Call repository method to find user by email and phone number
         User user = loginRepository.login(loginRequest.getEmail(), loginRequest.getPhoneNumber());

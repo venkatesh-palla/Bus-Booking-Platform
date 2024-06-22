@@ -30,4 +30,9 @@ public interface PaymentRepository extends JpaRepository<Payment, String> {
     @Query(value = "UPDATE bookings SET booking_status = 'Sucessfull' WHERE booking_id = :bookingId", nativeQuery = true)
     public void sucess(@Param("bookingId") String bookingId);
 
+
+
+    @Query(value = "UPDATE bookings SET booking_status = 'unSucessfull' WHERE booking_id = :bookingId", nativeQuery = true)
+    public void unSucess(@Param("bookingId") String bookingId);
+
 }

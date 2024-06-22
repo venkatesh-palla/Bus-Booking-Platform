@@ -232,4 +232,22 @@ public class BusServiceImpl implements BusService {
 
         return connectedBusApiResponses;
     }
+
+    @Override
+    public BusResponse getBusByBusId(String busId) {
+        BusRequest busRequest = (BusRequest) busRepository.getBusByName(busId);
+        BusResponse busResponse = new BusResponse();
+
+        busResponse.setBusType(busRequest.getBusType());
+        busResponse.setBusName(busRequest.getBusName());
+        busResponse.setBusId(busRequest.getBusId());
+        busResponse.setDestination(busRequest.getDestination());
+        busResponse.setSource(busRequest.getSource());
+        busResponse.setDate(busRequest.getDate());
+        busResponse.setAvailableSeats(busRequest.getAvailableSeats());
+        busResponse.setTicketPrice(busRequest.getTicketPrice());
+        busResponse.setTotalSeats(busRequest.getTotalSeats());
+
+        return busResponse;
+    }
 }

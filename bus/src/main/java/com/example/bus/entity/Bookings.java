@@ -54,4 +54,5 @@ public class Bookings {
 
     @Column(name = "bookingStatus")
     private String bookingStatus;
+
 }
