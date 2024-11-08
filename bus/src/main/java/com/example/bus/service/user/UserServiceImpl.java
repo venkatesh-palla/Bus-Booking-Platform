@@ -3,6 +3,7 @@ package com.example.bus.service.user;
 import com.example.bus.entity.User;
 import com.example.bus.api.request.user.UserRequest;
 import com.example.bus.api.response.user.UserResponse;
+import com.example.bus.exception.UserNotFoundException;
 import com.example.bus.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,7 +105,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void delete(Long userId) {
-        userRepository.deleteById(userId);
+        if(userRepository.existsById(userId))
+        {
+            userRepository.deleteById(userId);
+        }
+        else {
+            throw new UserNotFoundException("User with id " + userId + " not found.");
+        }
     }
 
     /**
@@ -134,5 +141,17 @@ public class UserServiceImpl implements UserService {
         }
 
         return userResponses;
+    }
+
+    @Override
+    public UserResponse getDataByUserId(Long userId) {
+        if(userRepository.existsById(userId))
+        {
+            return userRepository.getDataByUserId(userId);
+        }
+        else {
+            throw new UserNotFoundException("User is found with this "+userId);
+        }
+
     }
 }

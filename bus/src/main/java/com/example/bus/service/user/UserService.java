@@ -26,6 +26,7 @@ public interface UserService {
     public UserResponse update(UserRequest userRequest);
 
 
+
     /**
      * Deletes a user identified by the given user ID.
      *
@@ -40,5 +41,12 @@ public interface UserService {
      * @return List of UserResponse objects representing all users.
      */
     public List<UserResponse> get();
+
+    /**
+     * Retrives data by userId
+     * @param userId
+     * @return user data
+     */
+    public UserResponse getDataByUserId(Long userId);
 
 }
