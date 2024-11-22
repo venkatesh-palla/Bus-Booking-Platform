@@ -61,7 +61,7 @@ public class UserController {
     /**
      * Endpoint to retrieve details of all users.
      *
-     * @return List of UserResponse containing details of all users.
+     * @return List of UserResponse containing details of all user.
      */
     @GetMapping("/getData")
     @Operation(summary = "Get all users",
@@ -69,5 +69,14 @@ public class UserController {
     public List<UserResponse> get() {
         return userService.get();
     }
+
+    @PostMapping("/getDataByUserId/userId")
+    @Operation(summary = "Get data of user by userId",
+                description = "Retrives user Data")
+    public UserResponse getDataByUserId(@PathVariable Long userId)
+    {
+        return userService.getDataByUserId(userId);
+    }
+
 
 }
